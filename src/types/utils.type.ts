@@ -9,6 +9,12 @@ export interface SuccessResponse<Data> {
   status?: number
 }
 
+export interface SuccessResponsePagination<Data> {
+  message: string
+  data: Data
+  total_record?: number
+}
+
 export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
 }

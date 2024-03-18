@@ -22,6 +22,8 @@ import MainTabNavigator from "./src/routes/MainTabNavigator";
 import UserScreen from "./src/screens/User";
 import BannerScreen from "./src/screens/Banner";
 import ComboScreen from "./src/screens/Combo";
+import BannerEdit from "./src/screens/BannerEdit";
+import LoginScreen from "./src/screens/Login";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,7 +66,7 @@ function App(): JSX.Element {
       <AppProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={"HomePage"}
+            initialRouteName={"LoginScreen"}
             screenOptions={{
               headerShown: false,
             }}
@@ -75,6 +77,8 @@ function App(): JSX.Element {
             <Stack.Screen name="UserScreen" component={UserScreen} />
             <Stack.Screen name="BannerScreen" component={BannerScreen} />
             <Stack.Screen name="ComboScreen" component={ComboScreen} />
+            <Stack.Screen name="BannerEdit" component={BannerEdit} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
           </Stack.Navigator>
           <Toast config={toastConfig} />
         </NavigationContainer>

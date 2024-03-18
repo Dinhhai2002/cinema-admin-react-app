@@ -14,7 +14,7 @@ const Pagination = ({ setPage, setLimit, totalRecord, limit, page }: any) => {
       onPageChange={(page: any) => {
         handleChange(page);
       }}
-      label={`${page + 1} of ${utils.getTotalPage(totalRecord, limit)}`}
+      label={`${page} of ${utils.getTotalPage(totalRecord, limit)}`}
     />
   );
 };

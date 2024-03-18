@@ -1,39 +1,53 @@
-import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import statisticsApi from "../apis/statistics";
 import TopMovie from "../components/TopMovie";
+import { MovieStatistic } from "../types/statistics.type";
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      title: "Doanh thu",
-      total: 1000000,
-      backgroundColor: "#ffdcb2",
-      titleColor: "#ff8c00",
-    },
-    {
-      id: 2,
-      title: "Phim đang chiếu",
-      total: 18,
-      backgroundColor: "#bfdfdf",
-      titleColor: "#008080",
-    },
-    {
-      id: 3,
-      title: "Phim sắp chiếu",
-      total: 20,
-      backgroundColor: "#e2caf8",
-      titleColor: "#8a2be2",
-    },
-    {
-      id: 4,
-      title: "Tổng người dùng",
-      total: 30,
-      backgroundColor: "#d8e4fa",
-      titleColor: "#6495ed",
-    },
-  ]);
+  const [appointments, setAppointments] = useState<any>([]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["home"],
+    queryFn: () => statisticsApi.getStatisticsHome(),
+    staleTime: 3 * 60 * 1000,
+  });
+  const dataStatistics = data?.data.data;
+  const dataTable = data?.data.data.movie_statistic;
+  useEffect(() => {
+    setAppointments([
+      {
+        id: 1,
+        title: "Doanh thu",
+        total: dataStatistics?.total_revenue,
+        backgroundColor: "#ffdcb2",
+        titleColor: "#ff8c00",
+      },
+      {
+        id: 2,
+        title: "Phim đang chiếu",
+        total: dataStatistics?.showing_movie,
+        backgroundColor: "#bfdfdf",
+        titleColor: "#008080",
+      },
+      {
+        id: 3,
+        title: "Phim sắp chiếu",
+        total: dataStatistics?.upcoming_movie,
+        backgroundColor: "#e2caf8",
+        titleColor: "#8a2be2",
+      },
+      {
+        id: 4,
+        title: "Tổng người dùng",
+        total: dataStatistics?.user_count,
+        backgroundColor: "#d8e4fa",
+        titleColor: "#6495ed",
+      },
+    ]);
+  }, [data]);
 
   const renderAppointmentCard = ({ item }: any) => (
     <View
@@ -56,11 +70,6 @@ const HomeScreen = () => {
     </View>
   );
 
-  // const searchFilter = (item: any) => {
-  //   const query = searchQuery.toLowerCase();
-  //   return item.title.toLowerCase().includes(query);
-  // };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Cinema</Text>
@@ -72,7 +81,7 @@ const HomeScreen = () => {
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
       />
-      <TopMovie />
+      <TopMovie listMovie={dataTable} />
     </View>
   );
 };

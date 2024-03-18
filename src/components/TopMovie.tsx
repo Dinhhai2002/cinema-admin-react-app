@@ -1,26 +1,9 @@
 import * as React from "react";
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { DataTable } from "react-native-paper";
+import utils from "../utils/UtilsClass";
 
-const TopMovie = () => {
-  const [listMovie, setListMovie] = useState([
-    {
-      id: 1,
-      name: "Cô giáo em là số 1",
-      totalRevenue: 1000000,
-      totalTicket: 17,
-    },
-    {
-      id: 2,
-      name: "Cô giáo em là số 1",
-      totalRevenue: 1000000,
-      totalTicket: 20,
-    },
-  ]);
-  const handleClick = () => {
-    alert(123);
-  };
+const TopMovie = ({ listMovie }: any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Top danh sách phim có doanh thu cao</Text>
@@ -30,13 +13,15 @@ const TopMovie = () => {
           <DataTable.Title numeric>Tổng doanh thu</DataTable.Title>
           <DataTable.Title numeric>Tổng số vé</DataTable.Title>
         </DataTable.Header>
-        {listMovie.map((item: any) => (
-          <DataTable.Row>
+        {listMovie?.map((item: any) => (
+          <DataTable.Row key={item._id}>
             <DataTable.Cell>
-              <Text>{item.name} </Text>
+              <Text>{item.movie_name} </Text>
             </DataTable.Cell>
-            <DataTable.Cell numeric>{item.totalRevenue}</DataTable.Cell>
-            <DataTable.Cell numeric>{item.totalTicket}</DataTable.Cell>
+            <DataTable.Cell numeric>
+              {utils.formatMoney(item.total_revenue)}
+            </DataTable.Cell>
+            <DataTable.Cell numeric>{item.total_booking}</DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>

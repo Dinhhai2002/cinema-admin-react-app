@@ -109,6 +109,14 @@ export function getCurrentDayOfWeek(): DayOfWeek {
   return new Date().getDay() as DayOfWeek;
 }
 
+export const removeNullish = (obj: { [s: string]: unknown } | ArrayLike<unknown>) =>
+  Object.entries(obj).reduce((a: { [s: string]: unknown }, [k, v]) => {
+    if (v !== null && v !== undefined && v !== '') {
+      a[k] = v
+    }
+    return a
+  }, {})
+
 
 
 // export function calculateTicketPrice(seatType: SeatType): number {
