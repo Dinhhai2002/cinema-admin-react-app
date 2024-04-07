@@ -24,6 +24,8 @@ import BannerScreen from "./src/screens/Banner";
 import ComboScreen from "./src/screens/Combo";
 import BannerEdit from "./src/screens/BannerEdit";
 import LoginScreen from "./src/screens/Login";
+import UserView from "./src/screens/UserView";
+import MovieEdit from "./src/screens/MovieEdit";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,10 +76,12 @@ function App(): JSX.Element {
             <Stack.Screen name={"HomePage"} component={MainTabNavigator} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Movie" component={MovieScreen} />
+            <Stack.Screen name="MovieEdit" component={MovieEdit} />
             <Stack.Screen name="UserScreen" component={UserScreen} />
+            <Stack.Screen name="UserView" component={UserView} />
             <Stack.Screen name="BannerScreen" component={BannerScreen} />
-            <Stack.Screen name="ComboScreen" component={ComboScreen} />
             <Stack.Screen name="BannerEdit" component={BannerEdit} />
+            <Stack.Screen name="ComboScreen" component={ComboScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
           </Stack.Navigator>
           <Toast config={toastConfig} />

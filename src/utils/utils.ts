@@ -61,6 +61,16 @@ export function formatDateToString(date: Date) {
   return formattedDate;
 }
 
+export function formatDate(dateString: string) {
+  // Tách chuỗi ngày thành các phần
+  const parts = dateString.split("/");
+
+  // Chuyển đổi thứ tự các phần
+  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+  return formattedDate;
+}
+
 export function formatDateToStringWithTime(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

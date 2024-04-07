@@ -25,6 +25,9 @@ const userApi = {
   getProfile(id: string) {
     return http.get<SuccessResponse<User>>(`${USER_URL}/${id}`);
   },
+  deleteUser(_id: string[]) {
+    return http.post(`${USER_URL}/${_id}/delete`)
+  },
   updateUser(_id: string, body: Omit<User, "_id">) {
     return http.post(`${USER_URL}/${_id}/update`, body);
   },

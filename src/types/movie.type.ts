@@ -2,6 +2,7 @@ export interface Movie {
   _id: string;
   name: string;
   english_name: string;
+  genre_ids: string;
   genres: string;
   title: string;
   format: string;
