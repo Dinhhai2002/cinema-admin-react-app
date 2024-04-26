@@ -7,4 +7,5 @@ export interface User {
   email: string
   date_of_birth?: string
   gender?: string
+  status: number
 }

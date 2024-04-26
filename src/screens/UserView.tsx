@@ -9,10 +9,9 @@ import {
   View,
 } from "react-native";
 import { Button, Modal, PaperProvider, Portal } from "react-native-paper";
+import Toast from "react-native-toast-message";
 import userApi from "../apis/user.api";
 import { User } from "../types/user.type";
-import { useQuery } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
 
 function UserView() {
   const [visible, setVisible] = React.useState(false);
@@ -24,6 +23,7 @@ function UserView() {
   const { params } = useRoute();
   const navigation = useNavigation<any>();
   const user = (params as any).user as User;
+  const refetch = (params as any).refetch as any;
 
   const deleteUser = useMutation({
     mutationKey: ["user"],
@@ -37,12 +37,14 @@ function UserView() {
           type: "success",
           text1: "Thay đổi trạng thái người dùng thành công!",
         });
+        refetch();
       },
       onError: (error) => {},
     });
 
     hideModal();
   };
+
   return (
     <PaperProvider>
       <View style={styles.container}>
@@ -56,6 +58,12 @@ function UserView() {
 
         <Text style={styles.label}>email</Text>
         <TextInput style={styles.input} value={user.email} />
+
+        {/* <Text style={styles.label}>Trạng thái</Text>
+        <TextInput
+          style={styles.input}
+          value={`${user.status == 1 ? "hoạt động" : "Tạm khóa"}`}
+        /> */}
 
         <View className="flex justify-between align-middle">
           <TouchableOpacity

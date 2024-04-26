@@ -2,16 +2,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 import { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { PencilSquareIcon } from "react-native-heroicons/outline";
-import { Button, DataTable } from "react-native-paper";
+import { Button, DataTable, Searchbar } from "react-native-paper";
 import userApi from "../apis/user.api";
 import Pagination from "../components/Pagination";
-import { User } from "../types/user.type";
 
 const UserScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState("");
   const [role, setRole] = useState<number | null>(null);
 
@@ -29,12 +28,21 @@ const UserScreen = () => {
     queryFn: () => userApi.getUsers(queryConfig),
     staleTime: 3 * 60 * 1000,
   });
-  const dataTable = data?.data.data;
+  let dataTable = data?.data.data;
   const total = data?.data.total_record;
+
+  React.useEffect(() => {
+    refetch;
+  }, [pageSize]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Danh sách người dùng</Text>
+      <Searchbar
+        placeholder="Tìm kiếm"
+        onChangeText={setKeyword}
+        value={keyword}
+      />
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Mã người dùng</DataTable.Title>

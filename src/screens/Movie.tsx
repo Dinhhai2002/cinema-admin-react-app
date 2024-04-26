@@ -11,6 +11,7 @@ import {
   Modal,
   PaperProvider,
   Portal,
+  Searchbar,
 } from "react-native-paper";
 import Toast from "react-native-toast-message";
 import movieApi from "../apis/movie.api";
@@ -23,9 +24,6 @@ const MovieScreen = () => {
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState("");
   const [role, setRole] = useState<number | null>(null);
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -70,6 +68,7 @@ const MovieScreen = () => {
           type: "success",
           text1: "Thay đổi trạng thái phim thành công!",
         });
+        refetch();
       },
       onError: (error) => {},
     });
@@ -80,6 +79,11 @@ const MovieScreen = () => {
     <PaperProvider>
       <View style={styles.container}>
         <Text style={styles.title}>Danh sách phim</Text>
+        <Searchbar
+          placeholder="Tìm kiếm"
+          onChangeText={setKeyword}
+          value={keyword}
+        />
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Tên</DataTable.Title>

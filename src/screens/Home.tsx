@@ -1,13 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import authApi from "../apis/auth.api";
 import statisticsApi from "../apis/statistics";
 import TopMovie from "../components/TopMovie";
+import { AppContext } from "../contexts/app.context";
 import { MovieStatistic } from "../types/statistics.type";
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [appointments, setAppointments] = useState<any>([]);
+  const { profile, isAuthenticated, setIsAuthenticated, setProfile } =
+    useContext(AppContext);
+  const navigation = useNavigation<any>();
+
+  const logoutMutation = useMutation({
+    mutationFn: authApi.logout,
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    setIsAuthenticated(false);
+    setProfile(null);
+    navigation.navigate("LoginScreen");
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ["home"],
@@ -82,6 +105,14 @@ const HomeScreen = () => {
         numColumns={2}
       />
       <TopMovie listMovie={dataTable} />
+      <TouchableOpacity
+        className="px-[16px] py-[12px] bg-[#AE1F17] rounded-lg mb-[12px] mt-[24px] "
+        onPress={handleLogout}
+      >
+        <Text className="text-center text-[16px] font-semibold text-white">
+          Đăng xuất
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -10,57 +10,38 @@ import {
   View,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import movieApi from "../apis/movie.api";
-import { Movie } from "../types/movie.type";
-import { formatDate } from "../utils/utils";
+import comboApi from "../apis/combo.api";
+import { Combo, comboType } from "../types/combo.type";
 
-function MovieEdit() {
+function ComboEdit() {
   const [name, setName] = useState("");
-  const [duration, setDuration] = useState("");
-  const [director, setDirector] = useState("");
-  const [performer, setPerformer] = useState("");
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   //   const [movie, setMovie] = useState<any>({});
 
   const { params } = useRoute();
-  const movie = (params as any).movie as Movie;
+  const combo = (params as any).combo as Combo;
   const refetch = (params as any).refetch as any;
 
   useEffect(() => {
-    setName(movie.name);
-    setDuration(movie.duration);
-    setDirector(movie.director);
-    setPerformer(movie.performer);
-    setDescription(movie.description);
+    setName(combo.name);
+    setPrice(`${combo.price}`);
+    setDescription(combo.description);
   }, []);
 
-  const updateMovie = useMutation({
+  const updateCombo = useMutation({
     mutationKey: ["movie"],
-    mutationFn: (body: any) => movieApi.updateMovie(movie._id as string, body),
+    mutationFn: (body: any) => comboApi.updateCombo(combo._id as string, body),
   });
 
   const handleUpdate = () => {
-    const {
-      poster,
-      thumbnail,
-      updated_at,
-      created_at,
-      _id,
-      genre_ids,
-      ...rest
-    } = movie;
     const body = {
-      ...rest,
+      ...combo,
       name: name,
-      genres: Object(genre_ids).join(", "),
-      release: formatDate(movie.release),
-      duration: duration,
-      director: director,
-      performer: performer,
       description: description,
+      price: Number(price),
     };
-
-    updateMovie.mutate(body, {
+    updateCombo.mutate(body, {
       onSuccess: () => {
         Toast.show({
           type: "success",
@@ -80,37 +61,20 @@ function MovieEdit() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.title}>Chỉnh sửa banner</Text>
+        <Text style={styles.title}>Chỉnh sửa combo</Text>
 
-        <Text style={styles.label}>Tên phim</Text>
+        <Text style={styles.label}>Tên combo</Text>
         <TextInput style={styles.input} value={name} onChangeText={setName} />
 
-        <Text style={styles.label}>Thời lượng</Text>
+        <Text style={styles.label}>giá</Text>
+        <TextInput style={styles.input} value={price} onChangeText={setPrice} />
+
+        <Text style={styles.label}>Loại</Text>
         <TextInput
           style={styles.input}
-          value={duration}
-          onChangeText={setDuration}
+          value={comboType[combo.type - 1]}
+          readOnly
         />
-
-        <Text style={styles.label}>Thời gian phát hành</Text>
-        <TextInput style={styles.input} value={movie.release} readOnly />
-
-        <Text style={styles.label}>Tác giả</Text>
-        <TextInput
-          style={styles.input}
-          value={director}
-          onChangeText={setDirector}
-        />
-
-        <Text style={styles.label}>Diễn viên</Text>
-        <TextInput
-          style={styles.input}
-          value={performer}
-          onChangeText={setPerformer}
-        />
-
-        <Text style={styles.label}>Thể loại</Text>
-        <TextInput style={styles.input} value={movie.genres} readOnly />
 
         <Text style={styles.label}>mô tả</Text>
         <TextInput
@@ -124,7 +88,7 @@ function MovieEdit() {
           onPress={handleUpdate}
         >
           <Text className="text-center text-[16px] font-semibold text-white">
-            Cập nhật phim
+            Cập nhật combo
           </Text>
         </TouchableOpacity>
       </View>
@@ -168,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieEdit;
+export default ComboEdit;
