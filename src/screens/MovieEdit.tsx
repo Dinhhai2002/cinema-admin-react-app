@@ -80,7 +80,7 @@ function MovieEdit() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.title}>Chỉnh sửa banner</Text>
+        <Text style={styles.title}>Chỉnh sửa Phim</Text>
 
         <Text style={styles.label}>Tên phim</Text>
         <TextInput style={styles.input} value={name} onChangeText={setName} />
